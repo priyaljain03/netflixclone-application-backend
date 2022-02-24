@@ -16,7 +16,7 @@ SECRET_KEY = 'django-insecure-ohqo$2a3oetzsx)b+_z_pnnp&=$5&2_#j6q7$r2e_!kykj^eb#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
+    'http://localhost:3000','https://netflixclone-application.herokuapp.com/','http://netflixclone-application.herokuapp.com/'
 ]
 # CORS_ORIGIN_ALLOW_ALL = True
 AUTH_USER_MODEL = 'users.NewUser'
