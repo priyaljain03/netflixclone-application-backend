@@ -12,7 +12,6 @@ urlpatterns = [
     path('api/', include('movies.urls')),
     path('api/user/', include('users.urls')),
     path('api/token/', TokenObtainPairView.as_view()),
-    # path('api/token/refresh/', TokenRefreshView.as_view()),
 ]
 
 if settings.DEBUG:
