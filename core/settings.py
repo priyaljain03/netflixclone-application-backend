@@ -3,18 +3,13 @@ from datetime import timedelta
 from django.conf import settings
 import os
 import django_heroku
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-ohqo$2a3oetzsx)b+_z_pnnp&=$5&2_#j6q7$r2e_!kykj^eb#'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+
+DEBUG = True
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000','https://netflixclone-application.herokuapp.com','http://netflixclone-application.herokuapp.com'
 ]
@@ -39,18 +34,17 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
     'users',
     'movies',
+    'storages',
     'rest_framework_simplejwt.token_blacklist'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -127,16 +121,27 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
+AWS_ACCESS_KEY_ID = 'AKIAXSINPEZDU7GOEUDW';
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_S3_REGION_NAME = 'ap-south-1'
+AWS_S3_FILE_OVERWRITE = False
+AWS_STORAGE_BUCKET_NAME = 'django-netflix-clone'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {'CacheControl':'max-age=86400'}
+AWS_DEFAULT_ACL = 'public-read'
+# AWS_LOCATION = 'static'
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATIC_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-MEDIA_ROOT = BASE_DIR/'media'
-MEDIA_URL = '/media/'
 STATICFILES_DIRS = [
     BASE_DIR/'static'
 ]
+STATICFILES_LOCATION = 'static'
+STATICFILES_STORAGE = 'custom_storage.StaticStorage'
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
+
+MEDIAFILES_LOCATION = 'media'
+DEFAULT_FILE_STORAGE = 'custom_storage.MediaStorage'
+MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -174,4 +179,4 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-django_heroku.settings(locals())
+django_heroku.settings(locals(),staticfiles=False)
