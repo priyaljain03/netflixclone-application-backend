@@ -131,7 +131,9 @@ AWS_S3_OBJECT_PARAMETERS = {'CacheControl':'max-age=86400'}
 AWS_DEFAULT_ACL = None
 # AWS_LOCATION = 'static'
 
-
+STATICFILES_DIRS = [
+    BASE_DIR/'static'
+]
 STATICFILES_LOCATION = 'static'
 STATICFILES_STORAGE = 'custom_storage.StaticStorage'
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
